@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#242724">
+<title>Rawan Alamrei — Portfolio</title>
+<style>
+:root{
+  --bg:#242724; --panel:#292c29; --panel2:#20231f; --line:#424640;
+  --green:#8cff00; --green2:#b4ff58; --white:#f6f7f4; --muted:#c6c9c4;
+  --shadow:0 18px 60px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--white);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.8}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+.container{width:min(1180px,calc(100% - 32px));margin:auto}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(36,39,36,.86);backdrop-filter:blur(16px);border-bottom:1px solid #3a3e3a}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0}
+.brand{font-family:Georgia,serif;font-size:24px;letter-spacing:.4px}
+.nav-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:#30332f;color:var(--white);padding:9px 14px;border-radius:12px}
+.btn.primary{background:var(--green);color:#10140d;border-color:var(--green);font-weight:800}
+.admin-only{display:none!important}
+body.is-admin .admin-only{display:inline-block!important}
+.btn.danger{border-color:#7b3939;color:#ffb6b6}
+.hero{margin-top:20px;position:relative}
+.hero-cover{width:100%;aspect-ratio:1536/522;object-fit:contain;display:block;background:#171916;border-radius:0 0 24px 24px}
+.profile-wrap{display:flex;justify-content:center;position:relative;margin-top:-92px}
+.avatar{width:184px;height:184px;border-radius:50%;object-fit:cover;border:8px solid var(--bg);box-shadow:0 12px 40px rgba(0,0,0,.45);background:#242724}
+.identity{text-align:center;padding:18px 0 4px}
+.identity h1{font-family:Georgia,serif;font-size:42px;font-weight:500;margin:0}
+.tagline{color:var(--green);font-size:20px;font-weight:700;margin-top:8px}
+.section{padding:56px 0 10px}
+.section-title{text-align:center;margin-bottom:30px}
+.section-title h2{color:var(--green);font-size:31px;margin:0}
+.section-title p{color:#aeb3ad;margin:5px 0 0}
+.cv-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+#cvGrid .card{text-align:center}
+#cvGrid .card h3{text-align:center}
+#cvGrid .card p{margin-inline:auto;max-width:58ch}
+#cvGrid .list{list-style-position:inside;padding:0;text-align:center}
+#cvGrid .skills{justify-items:center}
+#cvGrid .skill{width:100%;text-align:center}
+.card{background:rgba(41,44,41,.72);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:var(--shadow)}
+.card h3{color:var(--green);margin:0 0 14px;font-size:21px}
+.card p,.card li{color:var(--white)}
+.list{margin:0;padding-right:20px}
+.skills{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.skill{padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#252824}
+.skill b{color:var(--green)}
+.projects-tools{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.filter.active{border-color:var(--green);color:var(--green)}
+.projects-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.project-card{background:#292c29;border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:.25s;box-shadow:0 12px 45px rgba(0,0,0,.18)}
+.project-card:hover{transform:translateY(-3px);border-color:#61675f}
+.project-cover{width:100%;aspect-ratio:3/2;object-fit:contain;background:#242724;display:block}
+.project-body{padding:16px 18px}
+.project-title{font-size:21px;margin:0 0 3px}
+.project-meta{color:var(--green);font-size:14px}
+.project-desc{color:#c8ccc7;margin:7px 0 0}
+.project-actions{display:flex;gap:8px;margin-top:14px}
+.project-actions .btn{flex:1}
+.landscape-card{grid-column:1/-1}
+.landscape-card .project-cover{aspect-ratio:16/7}
+.project-view{position:fixed;inset:0;background:rgba(10,12,10,.96);z-index:100;overflow:auto;display:none}
+.project-view.open{display:block}
+.project-view-inner{width:min(1200px,calc(100% - 24px));margin:30px auto 80px}
+.viewer-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
+.media-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.media-item{background:#1d201d;border:1px solid #3d423d;border-radius:16px;overflow:hidden}
+.media-item img,.media-item video{display:block;width:100%;height:auto;max-height:none;object-fit:contain;background:#171916}
+.media-item.landscape{grid-column:1/-1}
+.media-item.square img,.media-item.square video{aspect-ratio:1/1;object-fit:contain}
+.media-caption{padding:10px 12px;color:#cfd2cd}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;z-index:200;padding:18px}
+.modal.open{display:flex}
+.modal-card{width:min(920px,100%);max-height:92vh;overflow:auto;background:#282b28;border:1px solid #4a504a;border-radius:20px;padding:20px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+.field label{color:var(--green);font-weight:700}
+.field input,.field textarea,.field select{width:100%;background:#1f221f;color:#fff;border:1px solid #4a504a;border-radius:10px;padding:10px}
+.field textarea{min-height:110px;resize:vertical}
+.drop{border:1px dashed #657060;padding:22px;text-align:center;border-radius:14px;background:#20231f}
+.media-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.media-thumb{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#171916;position:relative}
+.media-thumb img,.media-thumb video{width:100%;height:120px;object-fit:contain;display:block}
+.media-thumb small{display:block;padding:5px 7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.remove-media{position:absolute;top:5px;left:5px;border:0;background:#7c2222;color:#fff;border-radius:8px;padding:3px 7px}
+.admin-note{color:#aeb3ad;font-size:13px;margin-top:6px}
+.footer{text-align:center;color:#929891;padding:55px 0}
+.empty{padding:50px;text-align:center;border:1px dashed #505650;border-radius:16px;color:#aaa}
+@media(max-width:800px){
+  .cv-grid,.projects-grid,.media-grid,.form-grid{grid-template-columns:1fr}
+  .landscape-card{grid-column:auto}
+  .landscape-card .project-cover{aspect-ratio:3/2}
+  .skills{grid-template-columns:1fr}
+  .identity h1{font-size:34px}.avatar{width:150px;height:150px}.profile-wrap{margin-top:-75px}
+  .hero-cover{border-radius:0 0 18px 18px}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="container nav">
+    <div class="brand">Rawan Alamrei</div>
+    <div class="nav-actions">
+      <button class="btn" onclick="scrollToId('projects')">المشاريع</button>
+      <button class="btn primary admin-only" onclick="openAdmin()">تعديل الموقع</button>
+      <button class="btn admin-only" onclick="setAdmin(false)">خروج من وضع التعديل</button>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="hero container">
+  <img id="heroCover" class="hero-cover" src="assets/cover.jpg" alt="غلاف الموقع">
+  <div class="profile-wrap"><img id="avatar" class="avatar" src="assets/portrait.jpg" alt="الصورة الشخصية"></div>
+  <div class="identity">
+    <h1 id="name">Rawan Alamrei</h1>
+    <div id="tagline" class="tagline">أحوّل الأفكار إلى تجارب بصرية مؤثرة.</div>
+  </div>
+</section>
+
+<section class="section container" id="cv">
+  <div class="section-title">
+    <h2>السيرة الذاتية</h2>
+    <p>نبذة · مهارات · خبرات · تواصل</p>
+  </div>
+  <div class="cv-grid" id="cvGrid"></div>
+</section>
+
+<section class="section container" id="projects">
+  <div class="section-title">
+    <h2>المشاريع والأعمال</h2>
+    <p>مجموعة من أعمالي ومشاريعي.</p>
+  </div>
+  <div class="projects-tools">
+    <div class="filters" id="filters"></div>
+    <button class="btn primary admin-only" onclick="openAdmin('project');newProject()">+ إضافة مشروع</button>
+  </div>
+  <div class="projects-grid" id="projectsGrid"></div>
+</section>
+</main>
+
+<footer class="footer">© Rawan Alamrei</footer>
+
+<div id="viewer" class="project-view">
+  <div class="project-view-inner">
+    <div class="viewer-head">
+      <div><h2 id="viewerTitle" style="margin:0;color:var(--green)"></h2><div id="viewerMeta" style="color:#bbb"></div></div>
+      <button class="btn" onclick="closeViewer()">إغلاق</button>
+    </div>
+    <p id="viewerDesc" style="color:#ddd"></p>
+    <div id="mediaGrid" class="media-grid"></div>
+  </div>
+</div>
+
+<div id="admin" class="modal">
+ <div class="modal-card">
+   <div style="display:flex;justify-content:space-between;gap:12px;align-items:center">
+     <h2 style="margin:0;color:var(--green)">لوحة تحرير الموقع</h2>
+     <button class="btn" onclick="closeAdmin()">إغلاق</button>
+   </div>
+   <p class="admin-note">الصور والفيديوهات تُحفظ محليًا داخل المتصفح بأصلها دون إعادة تحجيم أو ضغط. سعة التخزين الفعلية تعتمد على المتصفح والجهاز.</p>
+   <div class="filters" style="margin:18px 0">
+     <button class="btn filter active" data-tab="profile" onclick="switchTab('profile')">الهوية</button>
+     <button class="btn filter" data-tab="cv" onclick="switchTab('cv')">السيرة</button>
+     <button class="btn filter" data-tab="projects" onclick="switchTab('projects')">المشاريع</button>
+   </div>
+
+   <div id="tab-profile">
+     <div class="form-grid">
+       <div class="field"><label>الاسم</label><input id="fName"></div>
+       <div class="field"><label>الجملة التعريفية</label><input id="fTagline"></div>
+       <div class="field full"><label>غلاف الموقع</label><input id="fCover" type="file" accept="image/*"></div>
+       <div class="field full"><label>الصورة الشخصية</label><input id="fAvatar" type="file" accept="image/*"></div>
+     </div>
+     <div style="margin-top:14px"><button class="btn primary" onclick="saveProfile()">حفظ الهوية</button></div>
+   </div>
+
+   <div id="tab-cv" style="display:none">
+     <div id="cvEditor"></div>
+     <button class="btn primary" onclick="saveCV()">حفظ السيرة</button>
+   </div>
+
+   <div id="tab-projects" style="display:none">
+     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+       <button class="btn primary" onclick="newProject()">+ مشروع جديد</button>
+       <button class="btn" onclick="exportData()">تصدير نسخة احتياطية</button>
+       <label class="btn">استيراد نسخة احتياطية<input type="file" accept=".json" onchange="importData(event)" hidden></label>
+     </div>
+     <div id="projectAdminList"></div>
+   </div>
+ </div>
+</div>
+
+<script>
+const DB_NAME='rawan_portfolio_db', DB_VER=1, STORE='media';
+const KEY='rawan_portfolio_data_v2';
+let db, data, currentFilter='الكل', editingProjectId=null;
+function uid(){return (window.crypto&&crypto.randomUUID)?crypto.randomUUID():'id'+Date.now().toString(36)+Math.random().toString(36).slice(2)}
+const ADMIN_HASH='-1518560041'; // كلمة المرور الافتراضية: rawan2026
+function pwHash(t){let x=0;for(const c of t)x=(Math.imul(31,x)+c.charCodeAt(0))|0;return String(x)}
+function setAdmin(on){document.body.classList.toggle('is-admin',on);try{on?sessionStorage.setItem('rawan_admin','1'):sessionStorage.removeItem('rawan_admin')}catch(e){}if(!on)closeAdmin()}
+function tryAdmin(){
+ if(location.hash!=='#admin')return;
+ const t=prompt('كلمة مرور وضع التعديل');
+ if(t!==null){if(pwHash(t)===ADMIN_HASH)setAdmin(true);else alert('كلمة المرور غير صحيحة')}
+ history.replaceState(null,'',location.pathname+location.search);
+}
+try{localStorage.removeItem('rawan_admin');if(sessionStorage.getItem('rawan_admin')==='1')document.body.classList.add('is-admin')}catch(e){}
+tryAdmin();
+window.addEventListener('hashchange',tryAdmin);
+
+
+const defaultData={
+ profile:{name:'Rawan Alamrei',tagline:'أحوّل الأفكار إلى تجارب بصرية مؤثرة.',cover:'assets/cover.jpg',avatar:'assets/portrait.jpg'},
+ cv:{
+  intro:'خبيرة في التسويق والتصميم الجرافيكي، حاصلة على درجة البكالوريوس في الاتصال التسويقي والإعلان، وأسعى إلى توظيف خبرتي ومهاراتي الإبداعية في أعمال بصرية احترافية.',
+  contact:['البريد الإلكتروني: rawansadg6@gmail.com','الهاتف: +967739090308'],
+  qualifications:['بكالوريوس الاتصال التسويقي والإعلان — جامعة الجند للعلوم والتكنولوجيا (2019–2024)','شهادة تدريب في مختبر الطباعة الفني','شهادة في التصميم — جامعة الجند للعلوم والتكنولوجيا','شهادة في المهارات الريادية — جامعة الجند للعلوم والتكنولوجيا','رخصة قيادة دولية للحاسوب — معهد يمن تك','شهادة إسعافات أولية — مدرسة زينب الأهلية'],
+  experience:['العمل في مختبر الطباعة الفني','العمل الحر في التصميم الجرافيكي','العمل في منصة شقاعف الإلكترونية (مستمرة حسب السيرة الذاتية)'],
+  references:['المراجع المهنية والأكاديمية متاحة عند الطلب'],
+  software:['Adobe Illustrator','Adobe Photoshop'],
+  skills:['تصميم العروض التقديمية','الرسم','القيادة والتنظيم','التصميم الجرافيكي','تصميم الموشن','إدارة صفحات التواصل الاجتماعي'],
+  hobbies:['التصميم','الموسيقى','القراءة','التصوير']
+ },
+ projects:[
+  {id:uid(),title:'غصون الخير',category:'سوشيال ميديا / إعلانات',layout:'square',cover:'assets/ghoson-cover.jpg',desc:'التجربة التسويقية الذكية — مشروع نموذجي لغلاف المشروع، مع دعم إضافة وسائط غير محدودة.',media:[{src:'assets/ghoson-cover.jpg',type:'image',name:'غلاف غصون الخير'}]}
+ ]
+};
+
+function deepCopy(x){return JSON.parse(JSON.stringify(x))}
+function saveData(){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){alert('تعذّر الحفظ: مساحة المتصفح ممتلئة أو التخزين غير متاح.')}}
+function loadData(){try{const x=JSON.parse(localStorage.getItem(KEY)); if(!x)return deepCopy(defaultData); x.profile={...deepCopy(defaultData.profile),...(x.profile||{})}; x.cv={...deepCopy(defaultData.cv),...(x.cv||{})}; for(const k of Object.keys(defaultData.cv)){if(!Array.isArray(x.cv[k]))x.cv[k]=deepCopy(defaultData.cv[k])}; if(!Array.isArray(x.projects))x.projects=deepCopy(defaultData.projects); return x}catch(e){return deepCopy(defaultData)}}
+
+function openDB(){
+ return new Promise((resolve,reject)=>{
+  if(!window.indexedDB)return reject(new Error('no indexedDB'));
+  const r=indexedDB.open(DB_NAME,DB_VER);r.onblocked=()=>reject(new Error('blocked'));
+  r.onupgradeneeded=()=>r.result.createObjectStore(STORE,{keyPath:'id'});
+  r.onsuccess=()=>{db=r.result;resolve(db)}; r.onerror=()=>reject(r.error)
+ })
+}
+function idbPut(obj){return new Promise((res,rej)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put(obj);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
+function idbGet(id){return new Promise((res,rej)=>{const tx=db.transaction(STORE,'readonly');const r=tx.objectStore(STORE).get(id);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function idbDel(id){return new Promise((res,rej)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).delete(id);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
+
+function scrollToId(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'})}
+function render(){
+ document.getElementById('name').textContent=data.profile.name;
+ document.getElementById('tagline').textContent=data.profile.tagline;
+ document.getElementById('heroCover').src=data.profile.cover;
+ document.getElementById('avatar').src=data.profile.avatar;
+ renderCV(); renderFilters(); renderProjects();
+}
+function renderCV(){
+ const c=data.cv;
+ const sections=[
+  ['نبذة عني',`<p>${esc(c.intro)}</p>`],
+  ['معلومات التواصل',ul(c.contact||[])],
+  ['المؤهلات الأكاديمية',ul(c.qualifications)],
+  ['الخبرات العملية',ul(c.experience)],
+  ['المراجع',ul(c.references)],
+  ['المهارات',`<div class="skills">${c.skills.map(s=>`<div class="skill"><b>●</b> ${esc(s)}</div>`).join('')}</div>`],
+  ['البرامج',ul(c.software)],
+  ['الهوايات',`<div class="skills">${c.hobbies.map(s=>`<div class="skill">${esc(s)}</div>`).join('')}</div>`]
+ ];
+ document.getElementById('cvGrid').innerHTML=sections.map(([h,b])=>`<article class="card"><h3>${h}</h3>${b}</article>`).join('');
+}
+function ul(a){return `<ul class="list">${a.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function renderFilters(){
+ const cats=['الكل',...new Set(data.projects.map(p=>p.category||'أخرى'))];
+ document.getElementById('filters').innerHTML=cats.map(c=>`<button class="btn filter ${currentFilter===c?'active':''}" onclick="setFilter('${esc(c)}')">${esc(c)}</button>`).join('');
+}
+function setFilter(c){currentFilter=c;renderFilters();renderProjects()}
+function renderProjects(){
+ const ps=data.projects.filter(p=>currentFilter==='الكل'||p.category===currentFilter);
+ document.getElementById('projectsGrid').innerHTML=ps.length?ps.map(p=>`
+ <article class="project-card ${p.layout==='landscape'?'landscape-card':''}">
+  <img class="project-cover" src="${p.cover}" alt="${esc(p.title)}">
+  <div class="project-body">
+   <h3 class="project-title">${esc(p.title)}</h3>
+   <div class="project-meta">${esc(p.category||'مشروع')}</div>
+   <p class="project-desc">${esc(p.desc||'')}</p>
+   <div class="project-actions"><button class="btn primary" onclick="openViewer('${p.id}')">عرض المشروع</button><button class="btn admin-only" onclick="openAdmin('project','${p.id}')">تحرير</button></div>
+  </div>
+ </article>`).join(''):'<div class="empty">لا توجد مشاريع في هذا التصنيف.</div>';
+}
+
+function openViewer(id){
+ const p=data.projects.find(x=>x.id===id); if(!p)return;
+ document.getElementById('viewerTitle').textContent=p.title;
+ document.getElementById('viewerMeta').textContent=p.category||'';
+ document.getElementById('viewerDesc').textContent=p.desc||'';
+ const grid=document.getElementById('mediaGrid');
+ grid.innerHTML=(p.media||[]).map(m=>`<div class="media-item ${m.orientation==='landscape'?'landscape':m.orientation==='square'?'square':''}">
+  ${m.type==='video'?`<video controls preload="metadata" src="${m.src}"></video>`:`<img src="${m.src}" alt="${esc(m.name||'وسيط')}">`}
+  <div class="media-caption">${esc(m.name||'')}</div>
+ </div>`).join('')||'<div class="empty">لا توجد وسائط بعد.</div>';
+ document.getElementById('viewer').classList.add('open');
+}
+function closeViewer(){document.getElementById('viewer').classList.remove('open')}
+function mediaLandscape(m){return m.orientation==='landscape'}
+
+function openAdmin(tab='profile',id=null){
+ if(!document.body.classList.contains('is-admin'))return;
+ editingProjectId=id; document.getElementById('admin').classList.add('open'); switchTab(tab==='project'?'projects':tab);
+ document.getElementById('fName').value=data.profile.name; document.getElementById('fTagline').value=data.profile.tagline;
+ renderCVEditor(); renderProjectAdmin();
+}
+function closeAdmin(){document.getElementById('admin').classList.remove('open')}
+function switchTab(tab){
+ ['profile','cv','projects'].forEach(t=>document.getElementById('tab-'+t).style.display=t===tab?'block':'none');
+ document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+ if(tab==='projects')renderProjectAdmin();
+}
+function saveProfile(){
+ data.profile.name=document.getElementById('fName').value.trim()||'Rawan Alamrei';
+ data.profile.tagline=document.getElementById('fTagline').value.trim();
+ const cf=document.getElementById('fCover').files[0], af=document.getElementById('fAvatar').files[0];
+ const jobs=[];
+ if(cf)jobs.push(storeFile(cf).then(url=>data.profile.cover=url));
+ if(af)jobs.push(storeFile(af).then(url=>data.profile.avatar=url));
+ Promise.all(jobs).then(()=>{saveData();render();closeAdmin()})
+}
+function renderCVEditor(){
+ const c=data.cv;
+ document.getElementById('cvEditor').innerHTML=`
+ <div class="field"><label>النبذة</label><textarea id="cvIntro">${esc(c.intro)}</textarea></div>
+ <div class="form-grid" style="margin-top:12px">
+ ${['contact','qualifications','experience','references','software','skills','hobbies'].map(k=>`<div class="field"><label>${labelFor(k)}</label><textarea id="cv_${k}">${esc(c[k].join('\n'))}</textarea></div>`).join('')}
+ </div>`;
+}
+function labelFor(k){return ({contact:'معلومات التواصل',qualifications:'المؤهلات الأكاديمية',experience:'الخبرات العملية',references:'المراجع',software:'البرامج',skills:'المهارات',hobbies:'الهوايات'})[k]}
+function saveCV(){
+ data.cv.intro=document.getElementById('cvIntro').value;
+ ['contact','qualifications','experience','references','software','skills','hobbies'].forEach(k=>data.cv[k]=document.getElementById('cv_'+k).value.split('\n').map(x=>x.trim()).filter(Boolean));
+ saveData();render();renderCVEditor();
+}
+
+function renderProjectAdmin(){
+ const box=document.getElementById('projectAdminList');
+ box.innerHTML=data.projects.map(p=>`
+ <div class="card" style="margin-bottom:12px">
+  <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+   <div><b>${esc(p.title)}</b><div class="admin-note">${esc(p.category||'')} · ${p.media?.length||0} وسائط</div></div>
+   <div class="project-actions"><button class="btn" onclick="editProject('${p.id}')">تحرير</button><button class="btn danger" onclick="deleteProject('${p.id}')">حذف</button></div>
+  </div>
+  ${editingProjectId===p.id?projectEditor(p):''}
+ </div>`).join('') || '<div class="empty">لا توجد مشاريع.</div>';
+}
+function projectEditor(p){
+ return `<div style="margin-top:16px">
+  <div class="form-grid">
+   <div class="field"><label>اسم المشروع</label><input id="pTitle" value="${esc(p.title)}"></div>
+   <div class="field"><label>التصنيف</label><input id="pCategory" value="${esc(p.category||'')}"></div>
+   <div class="field"><label>نمط العرض</label><select id="pLayout"><option value="square" ${p.layout==='square'?'selected':''}>مربع/بوستر — مشروعان بجانب بعض</option><option value="landscape" ${p.layout==='landscape'?'selected':''}>عرضي — مشروع واحد في الصف</option></select></div>
+   <div class="field"><label>وصف المشروع</label><input id="pDesc" value="${esc(p.desc||'')}"></div>
+   <div class="field full"><label>غلاف المشروع (يُعرض كاملًا بنسبة 3:2)</label><input id="pCover" type="file" accept="image/*"></div>
+  </div>
+  <div class="drop" style="margin-top:12px">
+    <b>إضافة وسائط غير محدودة</b><br>
+    صور بأي أبعاد + فيديوهات بأي أحجام مدعومة من المتصفح<br>
+    <input id="pMedia" type="file" accept="image/*,video/*" multiple style="margin-top:10px">
+  </div>
+  <div class="media-list" id="mediaList">${(p.media||[]).map((m,i)=>`<div class="media-thumb">
+    ${m.type==='video'?`<video src="${m.src}" muted></video>`:`<img src="${m.src}" alt="">`}
+    <button class="remove-media" onclick="removeMedia('${p.id}',${i})">×</button>
+    <small>${esc(m.name||'وسيط')}</small>
+  </div>`).join('')}</div>
+  <div style="margin-top:14px;display:flex;gap:8px"><button class="btn primary" onclick="saveProject('${p.id}')">حفظ المشروع</button><button class="btn" onclick="editingProjectId=null;renderProjectAdmin()">إلغاء</button></div>
+ </div>`;
+}
+function newProject(){
+ const p={id:uid(),title:'مشروع جديد',category:'تصميمات',layout:'square',cover:'assets/ghoson-cover.jpg',desc:'',media:[]};
+ data.projects.unshift(p); editingProjectId=p.id; saveData(); renderProjectAdmin();
+}
+function editProject(id){editingProjectId=id;renderProjectAdmin()}
+async function saveProject(id){
+ try{await saveProjectInner(id)}catch(e){console.error(e);alert('حدث خطأ أثناء الحفظ: '+(e&&e.message||e))}
+}
+async function saveProjectInner(id){
+ const p=data.projects.find(x=>x.id===id); if(!p)return;
+ p.title=document.getElementById('pTitle').value.trim()||'مشروع بدون عنوان';
+ p.category=document.getElementById('pCategory').value.trim()||'أخرى';
+ p.layout=document.getElementById('pLayout').value;
+ p.desc=document.getElementById('pDesc').value.trim();
+ const cf=document.getElementById('pCover').files[0];
+ if(cf)p.cover=await storeFile(cf);
+ const files=[...document.getElementById('pMedia').files];
+ for(const f of files){
+   const url=await storeFile(f);
+   const ou=URL.createObjectURL(f);
+   const orientation=await getOrientation(ou,f.type);URL.revokeObjectURL(ou);
+   p.media.push({src:url,type:f.type.startsWith('video/')?'video':'image',name:f.name,orientation});
+ }
+ saveData();editingProjectId=null;render();renderProjectAdmin();
+}
+function removeMedia(id,i){const p=data.projects.find(x=>x.id===id); if(!p)return; p.media.splice(i,1);saveData();renderProjectAdmin()}
+function deleteProject(id){if(!confirm('حذف المشروع؟'))return;data.projects=data.projects.filter(p=>p.id!==id);saveData();render();renderProjectAdmin()}
+function getOrientation(url,type){
+ return new Promise(resolve=>{
+  const classify=(w,h)=>Math.abs(w-h)/Math.max(w,h)<=0.08?'square':(w>h?'landscape':'portrait');
+  const t=setTimeout(()=>resolve('portrait'),4000);
+  const done=v=>{clearTimeout(t);resolve(v)};
+  if(type.startsWith('video/')){const v=document.createElement('video');v.onloadedmetadata=()=>done(classify(v.videoWidth,v.videoHeight));v.onerror=()=>done('landscape');v.src=url}
+  else{const i=new Image();i.onload=()=>done(classify(i.naturalWidth,i.naturalHeight));i.onerror=()=>done('portrait');i.src=url}
+ })
+}
+async function storeFile(file){
+ if(!db)return await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(r.error);r.readAsDataURL(file)});
+ const id=uid();
+ await idbPut({id,name:file.name,type:file.type,blob:file,size:file.size});
+ return 'idb:'+id;
+}
+async function resolveSrc(src){
+ if(!src?.startsWith('idb:')||!db)return src;
+ const o=await idbGet(src.slice(4)); return o?URL.createObjectURL(o.blob):'';
+}
+async function hydrateAll(){
+ const els=[...document.querySelectorAll('img,video')];
+ for(const el of els){const s=el.getAttribute('src');if(s?.startsWith('idb:'))el.src=await resolveSrc(s)}
+}
+const oldRenderProjects=renderProjects;
+renderProjects=async function(){
+ oldRenderProjects();
+ await hydrateAll();
+}
+const oldRenderCV=renderCV;
+renderCV=async function(){oldRenderCV();await hydrateAll()}
+
+async function toDataUrl(src){
+ if(!src||!src.startsWith('idb:')||!db)return src;
+ const o=await idbGet(src.slice(4)); if(!o)return src;
+ return await new Promise(res=>{const r=new FileReader();r.onload=()=>res(r.result);r.readAsDataURL(o.blob)});
+}
+async function exportData(){
+ try{
+  const d=deepCopy(data);
+  d.profile.cover=await toDataUrl(d.profile.cover); d.profile.avatar=await toDataUrl(d.profile.avatar);
+  for(const p of d.projects){p.cover=await toDataUrl(p.cover);for(const m of (p.media||[]))m.src=await toDataUrl(m.src)}
+  const blob=new Blob([JSON.stringify(d)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='rawan-portfolio-backup.json';a.click();
+ }catch(e){alert('تعذّر التصدير: '+e.message)}
+}
+async function restoreSrc(src,name){
+ if(!src||!src.startsWith('data:')||!db)return src;
+ const b=await (await fetch(src)).blob();
+ return await storeFile(new File([b],name||'file',{type:b.type}));
+}
+function importData(e){
+ const f=e.target.files[0]; if(!f)return;
+ const r=new FileReader();r.onload=async()=>{try{
+  const d=JSON.parse(r.result);
+  d.profile.cover=await restoreSrc(d.profile.cover,'cover');d.profile.avatar=await restoreSrc(d.profile.avatar,'avatar');
+  for(const p of d.projects){p.cover=await restoreSrc(p.cover,p.title);for(const m of (p.media||[]))m.src=await restoreSrc(m.src,m.name)}
+  data=d;saveData();render();renderProjectAdmin();alert('تم الاستيراد.')
+ }catch(err){alert('ملف النسخة الاحتياطية غير صالح.')}};r.readAsText(f);
+}
+
+const _rpa=renderProjectAdmin;renderProjectAdmin=function(){_rpa();hydrateAll()};
+const _ov=openViewer;openViewer=function(id){_ov(id);hydrateAll()};
+
+(async()=>{
+ data=loadData();
+ render();
+ try{await openDB()}catch(e){console.error('IndexedDB unavailable',e)}
+ await hydrateAll();
+})();
+</script>
+</body>
+</html>
